@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AIPlannerController } from '../controllers/AIPlannerController';
@@ -8,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import Navbar from '../components/Navbar';
-import { Wand2, Clock, Edit, CheckCircle, Brain, Calendar, Lightbulb, Timer } from 'lucide-react';
+import { Wand2, Clock, Edit, CheckCircle, Brain, Calendar, Lightbulb, Timer, Target } from 'lucide-react';
 
 const AIPlanner = () => {
   const navigate = useNavigate();
