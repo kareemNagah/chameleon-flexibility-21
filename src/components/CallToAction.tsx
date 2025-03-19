@@ -49,10 +49,10 @@ const CallToAction = () => {
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
               <Link
-                to="/features"
+                to="/todo"
                 className="px-8 py-4 bg-transparent border border-white/30 text-white rounded-full font-medium transition-all duration-300 hover:bg-white/10"
               >
-                Learn More
+                Try Task Tracker
               </Link>
             </div>
             

@@ -1,5 +1,6 @@
 
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Features from '../components/Features';
@@ -17,6 +18,11 @@ const Index = () => {
       <Navbar />
       <Hero />
       <Features />
+      <div className="container mx-auto text-center py-12">
+        <Link to="/todo" className="cta-button inline-flex items-center">
+          Check out our To-Do List
+        </Link>
+      </div>
       <CallToAction />
       <Footer />
     </div>
