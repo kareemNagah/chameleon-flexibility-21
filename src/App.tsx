@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import TodoList from "./pages/TodoList";
+import Dashboard from "./pages/Dashboard";
+import AIPlanner from "./pages/AIPlanner";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,8 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/todo" element={<TodoList />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/ai-planner" element={<AIPlanner />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
