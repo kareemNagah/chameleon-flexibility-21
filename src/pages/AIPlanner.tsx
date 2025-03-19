@@ -34,25 +34,31 @@ const AIPlanner = () => {
     }));
   };
 
-  const generatePlan = () => {
+  const generatePlan = async () => {
     setIsGenerating(true);
     
-    // Simulate API delay
-    setTimeout(() => {
-      const plan = AIPlannerController.generatePlan(preferences);
+    try {
+      const plan = await AIPlannerController.generatePlan(preferences);
       setGeneratedPlan(plan);
-      setIsGenerating(false);
       setIsEditing(false);
       
       toast({
         title: "Plan Generated!",
         description: "Your personalized schedule is ready to review.",
       });
-    }, 1500);
+    } catch (error) {
+      console.error("Error generating plan:", error);
+      toast({
+        title: "Generation Failed",
+        description: "There was an error generating your plan. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const savePlan = () => {
-    // In a real app, this would save to the backend
     toast({
       title: "Plan Saved!",
       description: "Your personalized schedule has been saved to your dashboard.",
@@ -68,7 +74,6 @@ const AIPlanner = () => {
       <Navbar />
       <div className="container mx-auto py-28 px-4">
         <div className="flex flex-col gap-8 max-w-4xl mx-auto">
-          {/* Header Section */}
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-2">AI Personalized Planner</h1>
             <p className="text-muted-foreground">
@@ -76,7 +81,6 @@ const AIPlanner = () => {
             </p>
           </div>
 
-          {/* User Preferences Form */}
           <Card className="bg-white/80 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -185,10 +189,8 @@ const AIPlanner = () => {
             </CardContent>
           </Card>
 
-          {/* Generated Plan */}
           {generatedPlan && (
             <div className="space-y-6 animate-fade-in">
-              {/* Daily Schedule */}
               <Card className="bg-white/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -227,7 +229,6 @@ const AIPlanner = () => {
                 </CardContent>
               </Card>
 
-              {/* Weekly Focus & Suggested Habits */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Card className="bg-white/80 backdrop-blur-sm">
                   <CardHeader>
@@ -270,7 +271,6 @@ const AIPlanner = () => {
                 </Card>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button
                   variant="outline"

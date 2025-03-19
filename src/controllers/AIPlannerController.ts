@@ -1,4 +1,3 @@
-
 import { AIGeneratedPlan, UserPreferences, ScheduleItem } from "../models/AIPlanner";
 import { ApiService } from "../services/ApiService";
 
