@@ -72,8 +72,8 @@ const Features = () => {
   }, []);
 
   return (
-    <section className="section bg-white">
-      <div className="container mx-auto">
+    <section className="section bg-white py-24">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-16 reveal">
           <span className="inline-block px-3 py-1 text-xs font-medium bg-chameleon-green/10 text-chameleon-green-dark rounded-full">
             Core Features
@@ -132,7 +132,9 @@ const Features = () => {
                     <div className="w-2/3 h-3 bg-gray-100 rounded-full"></div>
                   </div>
                 </div>
-                <div className="absolute top-[100px] left-[50px] right-0 h-[200px] bg-white rounded-xl shadow-md p-4 transform -rotate-3">
+                
+                {/* Improved display for charts */}
+                <div className="absolute top-[100px] left-[50px] right-0 h-[200px] bg-white rounded-xl shadow-md p-4 transform -rotate-3 z-10">
                   <div className="flex items-center mb-4">
                     <div className="w-8 h-8 rounded-full bg-chameleon-yellow/30 mr-3"></div>
                     <div className="space-y-1">
@@ -155,6 +157,17 @@ const Features = () => {
                       ))}
                     </div>
                   </div>
+                </div>
+                
+                {/* Added chameleon illustration */}
+                <div className="absolute -bottom-4 -right-4 w-16 h-16 z-20">
+                  <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="rotate-45">
+                    <path 
+                      fill="#8BC34A" 
+                      d="M39.5,-65.4C50.9,-56.7,59.6,-44.5,65.7,-31.2C71.7,-17.9,75.1,-3.5,74.6,11.1C74.2,25.7,69.8,40.4,60.3,50.5C50.8,60.5,36.1,65.9,21.2,70.3C6.2,74.6,-9,78,-22.1,74.5C-35.1,71,-46,60.7,-54.2,48.7C-62.3,36.7,-67.6,23,-70.5,8.5C-73.4,-6,-73.9,-21.4,-68.4,-34.8C-62.8,-48.2,-51.1,-59.7,-37.7,-67.2C-24.3,-74.7,-9.3,-78.2,3.2,-82.6C15.7,-87,27.9,-74.3,39.5,-65.4Z" 
+                      transform="translate(100 100)" 
+                    />
+                  </svg>
                 </div>
               </div>
             </div>
