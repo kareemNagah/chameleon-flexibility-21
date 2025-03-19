@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -41,14 +41,15 @@ const Navbar = () => {
           <Link to="/" className="nav-link">
             Home
           </Link>
-          <Link to="/features" className="nav-link">
-            Features
+          <Link to="/dashboard" className="nav-link">
+            Dashboard
           </Link>
-          <Link to="/about" className="nav-link">
-            About
+          <Link to="/ai-planner" className="nav-link flex items-center gap-1">
+            <Sparkles className="h-4 w-4 text-chameleon-yellow-dark" />
+            AI Agent
           </Link>
-          <Link to="/contact" className="nav-link">
-            Contact
+          <Link to="/todo" className="nav-link">
+            Tasks
           </Link>
         </nav>
 
@@ -60,7 +61,7 @@ const Navbar = () => {
             Login
           </Link>
           <Link
-            to="/signup"
+            to="/ai-planner"
             className="cta-button"
           >
             Start Your Journey
@@ -98,25 +99,26 @@ const Navbar = () => {
             Home
           </Link>
           <Link 
-            to="/features" 
+            to="/dashboard" 
             className="text-xl nav-link"
             onClick={() => setIsMenuOpen(false)}
           >
-            Features
+            Dashboard
           </Link>
           <Link 
-            to="/about" 
-            className="text-xl nav-link"
+            to="/ai-planner" 
+            className="text-xl nav-link flex items-center gap-2"
             onClick={() => setIsMenuOpen(false)}
           >
-            About
+            <Sparkles className="h-5 w-5 text-chameleon-yellow-dark" />
+            AI Agent
           </Link>
           <Link 
-            to="/contact" 
+            to="/todo" 
             className="text-xl nav-link"
             onClick={() => setIsMenuOpen(false)}
           >
-            Contact
+            Tasks
           </Link>
           <div className="flex flex-col items-center space-y-4 pt-6 w-full">
             <Link 
@@ -127,7 +129,7 @@ const Navbar = () => {
               Login
             </Link>
             <Link
-              to="/signup"
+              to="/ai-planner"
               className="w-full text-center cta-button"
               onClick={() => setIsMenuOpen(false)}
             >

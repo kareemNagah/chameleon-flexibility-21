@@ -1,162 +1,73 @@
 
-import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 
 const Hero = () => {
-  const chameleonRef = useRef<HTMLDivElement>(null);
-  
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const elements = document.querySelectorAll('.reveal');
-    elements.forEach((el) => observer.observe(el));
-
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
-    };
-  }, []);
-
-  useEffect(() => {
-    const chameleon = chameleonRef.current;
-    if (!chameleon) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const { left, top, width, height } = chameleon.getBoundingClientRect();
-      const x = e.clientX - left;
-      const y = e.clientY - top;
-      
-      const eyeLeft = chameleon.querySelector('.eye-left') as HTMLElement;
-      const eyeRight = chameleon.querySelector('.eye-right') as HTMLElement;
-      
-      if (eyeLeft && eyeRight) {
-        const maxMove = 3;
-        const centerX = width / 2;
-        const centerY = height / 2;
-        
-        const moveX = ((x - centerX) / centerX) * maxMove;
-        const moveY = ((y - centerY) / centerY) * maxMove;
-        
-        eyeLeft.style.transform = `translate(${moveX}px, ${moveY}px)`;
-        eyeRight.style.transform = `translate(${moveX}px, ${moveY}px)`;
-      }
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-    return () => document.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-chameleon-light opacity-50"></div>
-      
-      {/* Animated background shapes */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute h-64 w-64 rounded-full bg-chameleon-green/10 -top-20 -left-20 animate-float"></div>
-        <div className="absolute h-48 w-48 rounded-full bg-chameleon-yellow/10 top-1/4 -right-10 animate-float animate-delay-300"></div>
-        <div className="absolute h-56 w-56 rounded-full bg-chameleon-orange/10 bottom-10 left-1/3 animate-float animate-delay-500"></div>
-      </div>
-      
-      <div className="container mx-auto px-4 flex flex-col-reverse lg:flex-row items-center relative z-10">
-        {/* Left column - Text content */}
-        <div className="lg:w-1/2 text-center lg:text-left space-y-6 pt-10 lg:pt-0 reveal">
-          <span className="inline-block px-3 py-1 text-xs font-medium bg-chameleon
--green/10 text-chameleon-green-dark rounded-full animate-fade-in">
-            Introducing Flex
-          </span>
-          
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight bg-clip-text text-transparent bg-chameleon-gradient">
-            Adapt. Grow. <span className="relative">
-              Flex
-              <span className="absolute bottom-0 left-0 w-full h-1 bg-chameleon-gradient"></span>
-            </span>
-          </h1>
-          
-          <p className="text-lg md:text-xl text-foreground/80 max-w-xl mx-auto lg:mx-0 animate-fade-in animate-delay-200">
-            The adaptive habit building platform that evolves with you. Transform your routines and achieve your goals with personalized guidance.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-4 animate-fade-in animate-delay-300">
-            <Link to="/signup" className="cta-button w-full sm:w-auto text-center">
-              Start Your Journey
-            </Link>
-            <Link to="/features" className="px-6 py-3 rounded-full border border-chameleon-green/30 text-foreground/80 hover:text-foreground hover:border-chameleon-green/70 transition-all duration-300 w-full sm:w-auto text-center">
-              Learn More
-            </Link>
+    <div className="relative min-h-screen bg-gradient-to-br from-white to-green-50 flex items-center justify-center overflow-hidden">
+      <div className="container mx-auto px-4 py-28 md:py-40 z-10">
+        <div className="flex flex-col md:flex-row items-center">
+          <div className="md:w-1/2 mb-12 md:mb-0">
+            <motion.h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Adapt, Evolve, <br/>
+              <span className="bg-clip-text text-transparent bg-chameleon-gradient">
+                Flourish.
+              </span>
+            </motion.h1>
+            <motion.p 
+              className="text-lg text-gray-600 mb-8 max-w-xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              The AI-powered productivity app that adapts to your workflow and helps you achieve your goals through personalized task management.
+            </motion.p>
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Link to="/ai-planner" className="cta-button">
+                Start Your Journey
+              </Link>
+              <Link to="/dashboard" className="flex items-center justify-center px-6 py-3 rounded-full border border-gray-300 hover:bg-gray-50 transition-colors duration-300">
+                See Dashboard
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Link>
+            </motion.div>
           </div>
-          
-          <div className="flex items-center justify-center lg:justify-start space-x-8 pt-6 animate-fade-in animate-delay-400">
-            <div className="flex flex-col items-center lg:items-start">
-              <span className="text-2xl font-bold text-chameleon-green">1M+</span>
-              <span className="text-sm text-foreground/60">Users</span>
-            </div>
-            <div className="flex flex-col items-center lg:items-start">
-              <span className="text-2xl font-bold text-chameleon-yellow">15K+</span>
-              <span className="text-sm text-foreground/60">Reviews</span>
-            </div>
-            <div className="flex flex-col items-center lg:items-start">
-              <span className="text-2xl font-bold text-chameleon-orange">98%</span>
-              <span className="text-sm text-foreground/60">Satisfaction</span>
-            </div>
-          </div>
-        </div>
-        
-        {/* Right column - Chameleon illustration */}
-        <div className="lg:w-1/2 flex justify-center lg:justify-end reveal">
-          <div 
-            ref={chameleonRef}
-            className="relative w-[280px] md:w-[400px] h-[280px] md:h-[400px] animate-float"
-          >
-            {/* Simple chameleon illustration */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-chameleon-green to-chameleon-green-light opacity-20 blur-xl"></div>
-            <div className="absolute top-1/4 right-1/4 w-1/2 h-1/2 bg-chameleon-green rounded-full transform rotate-45 opacity-30"></div>
-            
-            {/* Body */}
-            <div className="absolute top-[30%] left-[20%] w-[60%] h-[40%] bg-chameleon-green rounded-3xl"></div>
-            
-            {/* Head */}
-            <div className="absolute top-[25%] left-[10%] w-[35%] h-[30%] bg-chameleon-green rounded-3xl"></div>
-            
-            {/* Tail */}
-            <div className="absolute top-[35%] right-[5%] w-[35%] h-[20%] bg-chameleon-green rounded-full transform origin-left rotate-12"></div>
-            <div className="absolute top-[38%] right-[5%] w-[25%] h-[14%] bg-chameleon-green rounded-full transform origin-left -rotate-12"></div>
-            
-            {/* Eyes */}
-            <div className="absolute top-[28%] left-[15%] w-[9%] h-[9%] bg-white rounded-full">
-              <div className="eye-left absolute top-1/2 left-1/2 w-1/2 h-1/2 bg-black rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-200 ease-out"></div>
-            </div>
-            <div className="absolute top-[25%] left-[25%] w-[9%] h-[9%] bg-white rounded-full">
-              <div className="eye-right absolute top-1/2 left-1/2 w-1/2 h-1/2 bg-black rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-transform duration-200 ease-out"></div>
-            </div>
-            
-            {/* Legs */}
-            <div className="absolute top-[60%] left-[25%] w-[8%] h-[20%] bg-chameleon-green rounded-full transform origin-top rotate-12"></div>
-            <div className="absolute top-[60%] left-[45%] w-[8%] h-[20%] bg-chameleon-green rounded-full transform origin-top -rotate-12"></div>
-            <div className="absolute top-[60%] left-[65%] w-[8%] h-[20%] bg-chameleon-green rounded-full transform origin-top rotate-12"></div>
+          <div className="md:w-1/2 relative">
+            <motion.div
+              className="relative z-10 bg-white rounded-2xl shadow-xl overflow-hidden"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <img 
+                src="/placeholder.svg" 
+                alt="Flex App Interface" 
+                className="w-full h-auto"
+              />
+              <div className="absolute inset-0 bg-gradient-to-tr from-chameleon-green/10 to-chameleon-yellow/10 pointer-events-none" />
+            </motion.div>
+            <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-chameleon-orange/10 rounded-full filter blur-3xl" />
+            <div className="absolute -left-16 -top-16 w-64 h-64 bg-chameleon-green/10 rounded-full filter blur-3xl" />
           </div>
         </div>
       </div>
       
-      {/* Wave separator */}
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" className="w-full">
-          <path 
-            fill="#ffffff" 
-            fillOpacity="1" 
-            d="M0,32L80,37.3C160,43,320,53,480,58.7C640,64,800,64,960,58.7C1120,53,1280,43,1360,37.3L1440,32L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"
-          ></path>
-        </svg>
-      </div>
-    </section>
+      {/* Background Elements */}
+      <div className="absolute top-1/4 right-10 w-20 h-20 bg-chameleon-yellow/20 rounded-full filter blur-xl animate-float" />
+      <div className="absolute bottom-1/4 left-10 w-32 h-32 bg-chameleon-green/20 rounded-full filter blur-xl animate-float" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-1/3 left-1/4 w-16 h-16 bg-chameleon-orange/20 rounded-full filter blur-xl animate-float" style={{ animationDelay: '2s' }} />
+    </div>
   );
 };
 
