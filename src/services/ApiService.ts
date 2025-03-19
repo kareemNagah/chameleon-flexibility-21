@@ -1,32 +1,93 @@
 
-// This service would be responsible for making API calls to your FastAPI backend
-// Currently it's a placeholder that will be implemented when integrating with FastAPI
+// This service is responsible for making API calls to your FastAPI backend
 
-const API_BASE_URL = '/api'; // Update this with your FastAPI URL when ready
+const API_BASE_URL = 'http://localhost:8000/api'; // Update this with your FastAPI URL when deployed
 
 export const ApiService = {
   get: async <T>(endpoint: string): Promise<T> => {
-    // In a real implementation, this would make an HTTP GET request to your FastAPI backend
-    // For now, we'll throw an error to indicate it's not yet implemented
-    console.log(`GET request to ${API_BASE_URL}${endpoint} (not implemented yet)`);
-    throw new Error('API not implemented yet');
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Include credentials if you need cookies/authentication
+        credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error(`GET request to ${API_BASE_URL}${endpoint} failed:`, error);
+      throw error;
+    }
   },
 
   post: async <T>(endpoint: string, data: any): Promise<T> => {
-    // In a real implementation, this would make an HTTP POST request to your FastAPI backend
-    console.log(`POST request to ${API_BASE_URL}${endpoint} with data:`, data, '(not implemented yet)');
-    throw new Error('API not implemented yet');
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error(`POST request to ${API_BASE_URL}${endpoint} failed:`, error);
+      throw error;
+    }
   },
 
   put: async <T>(endpoint: string, data: any): Promise<T> => {
-    // In a real implementation, this would make an HTTP PUT request to your FastAPI backend
-    console.log(`PUT request to ${API_BASE_URL}${endpoint} with data:`, data, '(not implemented yet)');
-    throw new Error('API not implemented yet');
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(data),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error(`PUT request to ${API_BASE_URL}${endpoint} failed:`, error);
+      throw error;
+    }
   },
 
   delete: async <T>(endpoint: string): Promise<T> => {
-    // In a real implementation, this would make an HTTP DELETE request to your FastAPI backend
-    console.log(`DELETE request to ${API_BASE_URL}${endpoint} (not implemented yet)`);
-    throw new Error('API not implemented yet');
+    try {
+      const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error(`DELETE request to ${API_BASE_URL}${endpoint} failed:`, error);
+      throw error;
+    }
   }
 };
