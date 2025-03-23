@@ -35,12 +35,14 @@ const Index = () => {
           <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
             Our intuitive To-Do List helps you track your habits and stay on top of your commitments.
           </p>
-          <Link to="/todo">
-            <Button className="cta-button flex items-center justify-center gap-2 bg-flex-gradient hover:opacity-90 text-white font-semibold px-8 py-6 rounded-full text-lg shadow-md">
-              <ListChecks className="h-5 w-5" />
-              Check out our To-Do List
-            </Button>
-          </Link>
+          <div className="flex justify-center">
+            <Link to="/todo">
+              <Button className="cta-button flex items-center justify-center gap-2 bg-flex-gradient hover:opacity-90 text-white font-semibold px-8 py-6 rounded-full text-lg shadow-md">
+                <ListChecks className="h-5 w-5" />
+                Check My To-Do List
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
       

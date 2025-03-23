@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
@@ -9,18 +8,6 @@ const Hero = () => {
       <div className="container mx-auto px-4 py-28 md:py-40 z-10">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-12 md:mb-0">
-            <motion.div 
-              className="flex items-center gap-3 mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <img 
-                src="/lovable-uploads/61f9fbec-7a91-48c1-85b5-bb22bc410044.png" 
-                alt="Flex Logo" 
-                className="h-16 md:h-20 w-auto"
-              />
-            </motion.div>
             <motion.h1 
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-flex-text mb-6"
               initial={{ opacity: 0, y: 20 }}
