@@ -21,6 +21,13 @@ const Index = () => {
       <Hero />
       <Features />
       <div className="container mx-auto text-center py-12">
+        <div className="flex justify-center mb-4">
+          <img 
+            src="/lovable-uploads/73e4c415-eb5f-48db-a438-94ea38c84838.png" 
+            alt="Flex Logo" 
+            className="h-12 w-auto"
+          />
+        </div>
         <Link to="/todo">
           <Button className="cta-button bg-chameleon-green hover:bg-chameleon-green-dark text-white font-medium px-6 py-6 rounded-full text-lg shadow-md">
             <ListChecks className="mr-2" />

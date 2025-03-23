@@ -26,11 +26,11 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <div className="relative h-10 w-10 overflow-hidden">
-            <div className="absolute inset-0 rounded-full bg-chameleon-gradient animate-color-shift"></div>
-            <div className="absolute inset-2 rounded-full bg-white"></div>
-            <div className="absolute inset-[10px] rounded-full bg-chameleon-green"></div>
-          </div>
+          <img 
+            src="/lovable-uploads/73e4c415-eb5f-48db-a438-94ea38c84838.png" 
+            alt="Flex Logo" 
+            className="h-10 w-auto"
+          />
           <span className="text-xl font-bold bg-clip-text text-transparent bg-chameleon-gradient">
             Flex
           </span>

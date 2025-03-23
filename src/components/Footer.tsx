@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter, Linkedin, Send, Heart } from 'lucide-react';
 
@@ -9,11 +8,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2 mb-4">
-              <div className="relative h-8 w-8 overflow-hidden">
-                <div className="absolute inset-0 rounded-full bg-chameleon-gradient"></div>
-                <div className="absolute inset-1.5 rounded-full bg-white"></div>
-                <div className="absolute inset-[8px] rounded-full bg-chameleon-green"></div>
-              </div>
+              <img 
+                src="/lovable-uploads/73e4c415-eb5f-48db-a438-94ea38c84838.png" 
+                alt="Flex Logo" 
+                className="h-8 w-auto"
+              />
               <span className="text-xl font-bold bg-clip-text text-transparent bg-chameleon-gradient">
                 Flex
               </span>

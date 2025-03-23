@@ -1,4 +1,3 @@
-
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
@@ -9,6 +8,18 @@ const Hero = () => {
       <div className="container mx-auto px-4 py-28 md:py-40 z-10">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-12 md:mb-0">
+            <motion.div 
+              className="flex items-center gap-3 mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <img 
+                src="/lovable-uploads/61f9fbec-7a91-48c1-85b5-bb22bc410044.png" 
+                alt="Flex Logo" 
+                className="h-16 md:h-20 w-auto"
+              />
+            </motion.div>
             <motion.h1 
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 mb-6"
               initial={{ opacity: 0, y: 20 }}
@@ -57,7 +68,6 @@ const Hero = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-chameleon-green/10 to-chameleon-yellow/10 pointer-events-none" />
               
-              {/* Chameleon overlay - adding this element */}
               <div className="absolute bottom-0 right-0 w-32 h-32">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="opacity-70">
                   <path 
@@ -69,19 +79,16 @@ const Hero = () => {
               </div>
             </motion.div>
             
-            {/* Enhanced background elements */}
             <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-chameleon-orange/15 rounded-full filter blur-3xl" />
             <div className="absolute -left-16 -top-16 w-64 h-64 bg-chameleon-green/15 rounded-full filter blur-3xl" />
           </div>
         </div>
       </div>
       
-      {/* Enhanced background elements with better visibility */}
       <div className="absolute top-1/4 right-10 w-24 h-24 bg-chameleon-yellow/25 rounded-full filter blur-xl animate-float" />
       <div className="absolute bottom-1/4 left-10 w-36 h-36 bg-chameleon-green/25 rounded-full filter blur-xl animate-float" style={{ animationDelay: '1s' }} />
       <div className="absolute top-1/3 left-1/4 w-20 h-20 bg-chameleon-orange/25 rounded-full filter blur-xl animate-float" style={{ animationDelay: '2s' }} />
       
-      {/* Adding curved decoration elements */}
       <div className="absolute top-20 left-20 w-32 h-32 border-4 border-chameleon-green/10 rounded-full" />
       <div className="absolute bottom-20 right-20 w-48 h-48 border-4 border-chameleon-yellow/10 rounded-full" />
     </div>
