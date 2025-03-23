@@ -13,7 +13,7 @@ const PlanActions = ({ onModify, onSave }: PlanActionsProps) => {
     <div className="flex flex-col sm:flex-row gap-3 justify-center">
       <Button
         variant="outline"
-        className="gap-2"
+        className="gap-2 text-flex-text font-medium rounded-full hover:bg-flex-green/10 hover:text-flex-green"
         onClick={onModify}
       >
         <Edit className="h-4 w-4" />
@@ -22,7 +22,7 @@ const PlanActions = ({ onModify, onSave }: PlanActionsProps) => {
       
       <Button 
         onClick={onSave} 
-        className="gap-2 bg-chameleon-gradient hover:opacity-90"
+        className="gap-2 bg-flex-gradient hover:opacity-90 font-semibold rounded-full"
       >
         <CheckCircle className="h-4 w-4" />
         Accept & Save

@@ -19,6 +19,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['Poppins', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -63,8 +66,8 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Chameleon theme colors
-				chameleon: {
+				// Flex theme colors
+				flex: {
 					green: {
 						light: '#8BC34A',
 						DEFAULT: '#4CAF50',
@@ -79,7 +82,8 @@ export default {
 						light: '#FFCC80',
 						DEFAULT: '#FF9800',
 						dark: '#F57C00'
-					}
+					},
+					text: '#111827'
 				}
 			},
 			borderRadius: {
@@ -139,8 +143,9 @@ export default {
 			},
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'chameleon-gradient': 'linear-gradient(90deg, #4CAF50 0%, #8BC34A 30%, #FFC107 70%, #FF9800 100%)',
-				'chameleon-light': 'linear-gradient(135deg, rgba(139, 195, 74, 0.1) 0%, rgba(255, 193, 7, 0.1) 100%)'
+				'flex-gradient': 'linear-gradient(90deg, #4CAF50 0%, #8BC34A 30%, #FFC107 70%, #FF9800 100%)',
+				'flex-gradient-reverse': 'linear-gradient(90deg, #FF9800 0%, #FFC107 30%, #8BC34A 70%, #4CAF50 100%)',
+				'flex-light': 'linear-gradient(135deg, rgba(139, 195, 74, 0.1) 0%, rgba(255, 193, 7, 0.1) 100%)'
 			}
 		}
 	},
