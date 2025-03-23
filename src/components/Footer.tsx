@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter, Linkedin, Send, Heart } from 'lucide-react';
 
@@ -13,7 +14,7 @@ const Footer = () => {
                 alt="Flex Logo" 
                 className="h-8 w-auto"
               />
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-chameleon-gradient">
+              <span className="text-xl font-bold bg-clip-text text-transparent bg-flex-gradient">
                 Flex
               </span>
             </Link>
@@ -21,29 +22,29 @@ const Footer = () => {
               Adaptive habit building platform that evolves with you, helping you transform your routines and achieve your goals.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="p-2 rounded-full bg-chameleon-green/10 text-chameleon-green hover:bg-chameleon-green/20 transition-colors">
+              <a href="#" className="p-2 rounded-full bg-flex-green/10 text-flex-green hover:bg-flex-green/20 transition-colors">
                 <Facebook size={18} />
               </a>
-              <a href="#" className="p-2 rounded-full bg-chameleon-green/10 text-chameleon-green hover:bg-chameleon-green/20 transition-colors">
+              <a href="#" className="p-2 rounded-full bg-flex-green/10 text-flex-green hover:bg-flex-green/20 transition-colors">
                 <Instagram size={18} />
               </a>
-              <a href="#" className="p-2 rounded-full bg-chameleon-green/10 text-chameleon-green hover:bg-chameleon-green/20 transition-colors">
+              <a href="#" className="p-2 rounded-full bg-flex-green/10 text-flex-green hover:bg-flex-green/20 transition-colors">
                 <Twitter size={18} />
               </a>
-              <a href="#" className="p-2 rounded-full bg-chameleon-green/10 text-chameleon-green hover:bg-chameleon-green/20 transition-colors">
+              <a href="#" className="p-2 rounded-full bg-flex-green/10 text-flex-green hover:bg-flex-green/20 transition-colors">
                 <Linkedin size={18} />
               </a>
             </div>
           </div>
           
           <div>
-            <h3 className="font-bold mb-4">Quick Links</h3>
+            <h3 className="font-bold mb-4 text-flex-text">Quick Links</h3>
             <ul className="space-y-2">
               {['Home', 'Features', 'About', 'Contact', 'FAQ'].map((item) => (
                 <li key={item}>
                   <Link 
                     to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                    className="text-foreground/70 hover:text-chameleon-green transition-colors"
+                    className="text-foreground/70 hover:text-flex-green transition-colors"
                   >
                     {item}
                   </Link>
@@ -53,13 +54,13 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="font-bold mb-4">Resources</h3>
+            <h3 className="font-bold mb-4 text-flex-text">Resources</h3>
             <ul className="space-y-2">
               {['Blog', 'Help Center', 'Community', 'Privacy Policy', 'Terms of Service'].map((item) => (
                 <li key={item}>
                   <Link 
                     to={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="text-foreground/70 hover:text-chameleon-green transition-colors"
+                    className="text-foreground/70 hover:text-flex-green transition-colors"
                   >
                     {item}
                   </Link>
@@ -69,7 +70,7 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="font-bold mb-4">Newsletter</h3>
+            <h3 className="font-bold mb-4 text-flex-text">Newsletter</h3>
             <p className="text-foreground/70 mb-4">
               Subscribe to our newsletter for tips, updates, and exclusive content.
             </p>
@@ -77,9 +78,9 @@ const Footer = () => {
               <input 
                 type="email" 
                 placeholder="Enter your email" 
-                className="flex-1 px-4 py-2 rounded-l-lg border border-border focus:outline-none focus:ring-1 focus:ring-chameleon-green"
+                className="flex-1 px-4 py-2 rounded-l-lg border border-border focus:outline-none focus:ring-1 focus:ring-flex-green"
               />
-              <button className="bg-chameleon-green text-white px-4 py-2 rounded-r-lg hover:bg-chameleon-green-dark transition-colors">
+              <button className="bg-flex-green text-white px-4 py-2 rounded-r-lg hover:bg-flex-green-dark transition-colors">
                 <Send size={18} />
               </button>
             </div>
@@ -91,7 +92,7 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Flex. All rights reserved.
           </p>
           <p className="text-foreground/60 text-sm flex items-center">
-            Made with <Heart size={14} className="mx-1 text-chameleon-green" /> by the Flex Team
+            Made with <Heart size={14} className="mx-1 text-flex-green" /> by the Flex Team
           </p>
         </div>
       </div>

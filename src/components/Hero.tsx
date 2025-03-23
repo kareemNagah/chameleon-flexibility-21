@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
@@ -21,13 +22,13 @@ const Hero = () => {
               />
             </motion.div>
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-flex-text mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
               Adapt, Evolve, <br/>
-              <span className="bg-clip-text text-transparent bg-chameleon-gradient">
+              <span className="bg-clip-text text-transparent bg-flex-gradient">
                 Flourish.
               </span>
             </motion.h1>
@@ -66,7 +67,7 @@ const Hero = () => {
                 alt="Flex App Interface" 
                 className="w-full h-auto"
               />
-              <div className="absolute inset-0 bg-gradient-to-tr from-chameleon-green/10 to-chameleon-yellow/10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-flex-green/10 to-flex-yellow/10 pointer-events-none" />
               
               <div className="absolute bottom-0 right-0 w-32 h-32">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="opacity-70">
@@ -79,18 +80,18 @@ const Hero = () => {
               </div>
             </motion.div>
             
-            <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-chameleon-orange/15 rounded-full filter blur-3xl" />
-            <div className="absolute -left-16 -top-16 w-64 h-64 bg-chameleon-green/15 rounded-full filter blur-3xl" />
+            <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-flex-orange/15 rounded-full filter blur-3xl" />
+            <div className="absolute -left-16 -top-16 w-64 h-64 bg-flex-green/15 rounded-full filter blur-3xl" />
           </div>
         </div>
       </div>
       
-      <div className="absolute top-1/4 right-10 w-24 h-24 bg-chameleon-yellow/25 rounded-full filter blur-xl animate-float" />
-      <div className="absolute bottom-1/4 left-10 w-36 h-36 bg-chameleon-green/25 rounded-full filter blur-xl animate-float" style={{ animationDelay: '1s' }} />
-      <div className="absolute top-1/3 left-1/4 w-20 h-20 bg-chameleon-orange/25 rounded-full filter blur-xl animate-float" style={{ animationDelay: '2s' }} />
+      <div className="absolute top-1/4 right-10 w-24 h-24 bg-flex-yellow/25 rounded-full filter blur-xl animate-float" />
+      <div className="absolute bottom-1/4 left-10 w-36 h-36 bg-flex-green/25 rounded-full filter blur-xl animate-float" style={{ animationDelay: '1s' }} />
+      <div className="absolute top-1/3 left-1/4 w-20 h-20 bg-flex-orange/25 rounded-full filter blur-xl animate-float" style={{ animationDelay: '2s' }} />
       
-      <div className="absolute top-20 left-20 w-32 h-32 border-4 border-chameleon-green/10 rounded-full" />
-      <div className="absolute bottom-20 right-20 w-48 h-48 border-4 border-chameleon-yellow/10 rounded-full" />
+      <div className="absolute top-20 left-20 w-32 h-32 border-4 border-flex-green/10 rounded-full" />
+      <div className="absolute bottom-20 right-20 w-48 h-48 border-4 border-flex-yellow/10 rounded-full" />
     </div>
   );
 };

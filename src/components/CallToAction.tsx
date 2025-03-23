@@ -25,11 +25,11 @@ const CallToAction = () => {
   }, []);
 
   return (
-    <section className="section bg-chameleon-light py-24">
+    <section className="section bg-flex-light py-24">
       <div className="container mx-auto px-4">
         <div className="relative rounded-3xl overflow-hidden">
           {/* Background gradient */}
-          <div className="absolute inset-0 bg-chameleon-gradient opacity-90"></div>
+          <div className="absolute inset-0 bg-flex-gradient opacity-90"></div>
           
           {/* Content */}
           <div className="relative z-10 p-12 md:p-16 text-center">
@@ -43,7 +43,7 @@ const CallToAction = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 reveal" style={{ animationDelay: '200ms' }}>
               <Link
                 to="/ai-planner"
-                className="px-8 py-4 bg-white rounded-full font-medium text-chameleon-green-dark shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex items-center justify-center"
+                className="px-8 py-4 bg-white rounded-full font-medium text-flex-green-dark shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex items-center justify-center"
               >
                 Start Your Journey
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -77,7 +77,7 @@ const CallToAction = () => {
           <div className="absolute bottom-10 right-10 w-40 h-40 border-2 border-white/10 rounded-full"></div>
           <div className="absolute top-1/4 right-1/4 w-12 h-12 bg-white/10 rounded-full"></div>
           
-          {/* Added chameleon element */}
+          {/* Added Flex branding element */}
           <div className="absolute bottom-12 left-12 w-24 h-24">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="opacity-20">
               <path 

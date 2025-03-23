@@ -66,7 +66,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Flex theme colors
+				// Flex theme colors - Updated to match brand specs
 				flex: {
 					green: {
 						light: '#8BC34A',
@@ -83,7 +83,7 @@ export default {
 						DEFAULT: '#FF9800',
 						dark: '#F57C00'
 					},
-					text: '#111827'
+					text: '#111827' // Dark blue for contrast & text
 				}
 			},
 			borderRadius: {

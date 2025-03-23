@@ -20,21 +20,30 @@ const Index = () => {
       <Navbar />
       <Hero />
       <Features />
-      <div className="container mx-auto text-center py-12">
-        <div className="flex justify-center mb-4">
-          <img 
-            src="/lovable-uploads/73e4c415-eb5f-48db-a438-94ea38c84838.png" 
-            alt="Flex Logo" 
-            className="h-12 w-auto"
-          />
+      
+      {/* Todo List CTA Section */}
+      <div className="container mx-auto py-16 px-4 text-center">
+        <div className="max-w-4xl mx-auto bg-gradient-to-r from-flex-green/5 to-flex-yellow/5 rounded-3xl p-8 shadow-sm">
+          <div className="flex justify-center mb-6">
+            <img 
+              src="/lovable-uploads/73e4c415-eb5f-48db-a438-94ea38c84838.png" 
+              alt="Flex Logo" 
+              className="h-16 w-auto"
+            />
+          </div>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-flex-text">Ready to organize your tasks?</h2>
+          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+            Our intuitive To-Do List helps you track your habits and stay on top of your commitments.
+          </p>
+          <Link to="/todo">
+            <Button className="cta-button flex items-center justify-center gap-2 bg-flex-gradient hover:opacity-90 text-white font-semibold px-8 py-6 rounded-full text-lg shadow-md">
+              <ListChecks className="h-5 w-5" />
+              Check out our To-Do List
+            </Button>
+          </Link>
         </div>
-        <Link to="/todo">
-          <Button className="cta-button bg-chameleon-green hover:bg-chameleon-green-dark text-white font-medium px-6 py-6 rounded-full text-lg shadow-md">
-            <ListChecks className="mr-2" />
-            Check out our To-Do List
-          </Button>
-        </Link>
       </div>
+      
       <CallToAction />
       <Footer />
     </div>

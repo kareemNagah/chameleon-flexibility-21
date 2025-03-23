@@ -31,7 +31,7 @@ const Navbar = () => {
             alt="Flex Logo" 
             className="h-10 w-auto"
           />
-          <span className="text-xl font-bold bg-clip-text text-transparent bg-chameleon-gradient">
+          <span className="text-xl font-bold bg-clip-text text-transparent bg-flex-gradient">
             Flex
           </span>
         </Link>
@@ -45,7 +45,7 @@ const Navbar = () => {
             Dashboard
           </Link>
           <Link to="/ai-planner" className="nav-link flex items-center gap-1">
-            <Sparkles className="h-4 w-4 text-chameleon-yellow-dark" />
+            <Sparkles className="h-4 w-4 text-flex-yellow-dark" />
             AI Agent
           </Link>
           <Link to="/todo" className="nav-link">
@@ -110,7 +110,7 @@ const Navbar = () => {
             className="text-xl nav-link flex items-center gap-2"
             onClick={() => setIsMenuOpen(false)}
           >
-            <Sparkles className="h-5 w-5 text-chameleon-yellow-dark" />
+            <Sparkles className="h-5 w-5 text-flex-yellow-dark" />
             AI Agent
           </Link>
           <Link 
