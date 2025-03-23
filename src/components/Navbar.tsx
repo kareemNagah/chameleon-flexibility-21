@@ -2,10 +2,12 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import AuthModal from './auth/AuthModal';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +17,13 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const openAuthModal = () => {
+    setIsAuthModalOpen(true);
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
 
   return (
     <header
@@ -54,12 +63,12 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden md:flex items-center space-x-3">
-          <Link 
-            to="/login" 
+          <button 
+            onClick={openAuthModal}
             className="px-4 py-2 rounded-full text-foreground/80 hover:text-foreground transition-colors"
           >
             Login
-          </Link>
+          </button>
           <Link
             to="/ai-planner"
             className="cta-button"
@@ -121,13 +130,15 @@ const Navbar = () => {
             Tasks
           </Link>
           <div className="flex flex-col items-center space-y-4 pt-6 w-full">
-            <Link 
-              to="/login" 
+            <button 
+              onClick={() => {
+                setIsMenuOpen(false);
+                openAuthModal();
+              }}
               className="w-full text-center px-4 py-2 rounded-full text-foreground/80 hover:text-foreground transition-colors"
-              onClick={() => setIsMenuOpen(false)}
             >
               Login
-            </Link>
+            </button>
             <Link
               to="/ai-planner"
               className="w-full text-center cta-button"
@@ -138,6 +149,12 @@ const Navbar = () => {
           </div>
         </nav>
       </div>
+
+      {/* Authentication Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+      />
     </header>
   );
 };
