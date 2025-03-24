@@ -17,7 +17,7 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showEmailConfirmAlert, setShowEmailConfirmAlert] = useState(false);
+  const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('login');
 
   // Redirect if user is already logged in
@@ -28,13 +28,16 @@ const Auth = () => {
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
+    
     try {
       await signIn(email, password);
     } catch (error) {
       console.error("Login error:", error);
-      // Check if error is email not confirmed
-      if (error instanceof Error && error.message.includes("Email not confirmed")) {
-        setShowEmailConfirmAlert(true);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred during sign in');
       }
     } finally {
       setIsSubmitting(false);
@@ -44,12 +47,18 @@ const Auth = () => {
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
+    
     try {
       await signUp(email, password, fullName);
-      // Switch to login tab after signup
-      setActiveTab('login');
+      // We don't switch to login tab anymore as the user should be signed in automatically
     } catch (error) {
       console.error("Signup error:", error);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unknown error occurred during sign up');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -59,12 +68,12 @@ const Auth = () => {
     <div className="min-h-screen bg-gradient-to-br from-white to-green-50">
       <Navbar />
       <div className="container max-w-md mx-auto pt-28 px-4">
-        {showEmailConfirmAlert && (
+        {error && (
           <Alert variant="destructive" className="mb-4">
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Email not confirmed</AlertTitle>
+            <AlertTitle>Error</AlertTitle>
             <AlertDescription>
-              Please check your email inbox and follow the verification link before signing in.
+              {error}
             </AlertDescription>
           </Alert>
         )}

@@ -56,23 +56,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Sign in function
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
       
       if (error) {
-        // Handle the email not confirmed error specifically
-        if (error.message === "Email not confirmed") {
-          toast({
-            title: "Email not confirmed",
-            description: "Please check your email for verification instructions or contact support.",
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Error signing in",
-            description: error.message,
-            variant: "destructive",
-          });
-        }
+        // Handle general errors, no special handling for "Email not confirmed"
+        toast({
+          title: "Error signing in",
+          description: error.message,
+          variant: "destructive",
+        });
         throw error;
       }
       
@@ -88,10 +80,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Sign up function - updated to set autoconfirm
+  // Sign up function - updated to login immediately after signup
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      // For development purposes, we're setting emailRedirectTo but not waiting for confirmation
+      // First, check if the user already exists
+      const { data: { users }, error: getUserError } = await supabase.auth.admin.listUsers({
+        filters: {
+          email: email
+        }
+      });
+      
+      if (getUserError) {
+        console.error("Error checking existing user:", getUserError);
+      } else if (users && users.length > 0) {
+        // User exists, throw a descriptive error
+        toast({
+          title: "Email already registered",
+          description: "This email address is already registered. Please sign in instead.",
+          variant: "destructive",
+        });
+        throw new Error("Email already registered");
+      }
+      
+      // Create the user without waiting for email confirmation
       const { data, error: signUpError } = await supabase.auth.signUp({ 
         email, 
         password,
@@ -99,7 +110,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           data: {
             full_name: fullName
           },
-          emailRedirectTo: window.location.origin + '/auth'
+          // Remove emailRedirectTo to bypass email confirmation
+          emailRedirectTo: undefined
         }
       });
       
@@ -112,7 +124,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw signUpError;
       }
       
-      // If auto-confirm is enabled in Supabase, this will work directly
+      // Immediately sign in the user
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -120,26 +132,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       if (signInError) {
         console.error("Auto sign-in failed:", signInError);
-        
-        // If email confirmation is required
-        if (signInError.message === "Email not confirmed") {
-          toast({
-            title: "Account created!",
-            description: "Please check your email for verification instructions before signing in.",
-          });
-          return;
-        }
-        
         toast({
-          title: "Account created!",
-          description: "Please sign in with your credentials.",
+          title: "Account created",
+          description: "Your account was created but we couldn't sign you in automatically. Please sign in manually.",
+          variant: "destructive",
         });
         return;
       }
       
       toast({
         title: "Account created!",
-        description: "You've been automatically signed in."
+        description: "You've been successfully signed in."
       });
       
       navigate('/dashboard');
