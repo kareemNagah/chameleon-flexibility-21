@@ -45,21 +45,14 @@ const Hero = () => {
           </div>
           <div className="md:w-1/2 relative">
             <motion.div
-              className="relative z-10 bg-white rounded-2xl shadow-xl overflow-hidden"
+              className="relative z-10 flex justify-center items-center"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <img 
-                src="/placeholder.svg" 
-                alt="Flex App Interface" 
-                className="w-full h-auto"
-              />
-              <div className="absolute inset-0 bg-gradient-to-tr from-flex-green/10 to-flex-yellow/10 pointer-events-none" />
-              
-              {/* 3D Chameleon Character */}
+              {/* Large Chameleon Image with Shadow */}
               <motion.div 
-                className="absolute -right-6 -bottom-6 w-32 h-32"
+                className="w-full max-w-md"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ 
@@ -72,7 +65,10 @@ const Hero = () => {
                 <img 
                   src="/lovable-uploads/e1cb6a1f-60f1-4bb8-8d81-cf7ad0476d86.png" 
                   alt="Flex Chameleon" 
-                  className="w-full h-auto transform -rotate-12" 
+                  className="w-full h-auto drop-shadow-2xl filter" 
+                  style={{ 
+                    filter: "drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2))",
+                  }}
                 />
               </motion.div>
             </motion.div>
@@ -87,8 +83,7 @@ const Hero = () => {
       <div className="absolute bottom-1/4 left-10 w-36 h-36 bg-flex-green/25 rounded-full filter blur-xl animate-float" style={{ animationDelay: '1s' }} />
       <div className="absolute top-1/3 left-1/4 w-20 h-20 bg-flex-orange/25 rounded-full filter blur-xl animate-float" style={{ animationDelay: '2s' }} />
       
-      <div className="absolute top-20 left-20 w-32 h-32 border-4 border-flex-green/10 rounded-full" />
-      <div className="absolute bottom-20 right-20 w-48 h-48 border-4 border-flex-yellow/10 rounded-full" />
+      {/* Removed the circular frames */}
     </div>
   );
 };
