@@ -84,15 +84,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
       // First, check if the user already exists
-      const { data: { users }, error: getUserError } = await supabase.auth.admin.listUsers({
-        filters: {
-          email: email
-        }
+      const { count, error: countError } = await supabase
+        .from('profiles')
+        .select('*', { count: 'exact', head: true })
+        .eq('id', email);
+      
+      // Alternative way to check if user exists
+      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers({
+        page: 1,
+        perPage: 1,
+        search: email
       });
       
-      if (getUserError) {
-        console.error("Error checking existing user:", getUserError);
-      } else if (users && users.length > 0) {
+      if (countError) {
+        console.error("Error checking existing user:", countError);
+      } else if (authUsers && authUsers.users.length > 0) {
         // User exists, throw a descriptive error
         toast({
           title: "Email already registered",
