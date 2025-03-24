@@ -1,8 +1,15 @@
 
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Twitter, Linkedin, Send, Heart } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Linkedin, Send, Heart, ArrowUp } from 'lucide-react';
 
 const Footer = () => {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   return (
     <footer className="bg-white pt-16 pb-8">
       <div className="container mx-auto px-4">
@@ -40,32 +47,93 @@ const Footer = () => {
           <div>
             <h3 className="font-bold mb-4 text-flex-text">Quick Links</h3>
             <ul className="space-y-2">
-              {['Home', 'Features', 'About', 'Contact', 'FAQ'].map((item) => (
-                <li key={item}>
-                  <Link 
-                    to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                    className="text-foreground/70 hover:text-flex-green transition-colors"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link 
+                  to="/"
+                  onClick={scrollToTop}
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/focus"
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  Focus Mode
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/about"
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/settings"
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  Settings
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="#"
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  FAQ
+                </Link>
+              </li>
             </ul>
           </div>
           
           <div>
             <h3 className="font-bold mb-4 text-flex-text">Resources</h3>
             <ul className="space-y-2">
-              {['Blog', 'Help Center', 'Community', 'Privacy Policy', 'Terms of Service'].map((item) => (
-                <li key={item}>
-                  <Link 
-                    to={`/${item.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="text-foreground/70 hover:text-flex-green transition-colors"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link 
+                  to="/blog"
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="#"
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  Help Center
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="#"
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  Community
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="#"
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="#"
+                  className="text-foreground/70 hover:text-flex-green transition-colors"
+                >
+                  Terms of Service
+                </Link>
+              </li>
             </ul>
           </div>
           
@@ -91,9 +159,18 @@ const Footer = () => {
           <p className="text-foreground/60 text-sm mb-4 md:mb-0">
             &copy; {new Date().getFullYear()} Flex. All rights reserved.
           </p>
-          <p className="text-foreground/60 text-sm flex items-center">
-            Made with <Heart size={14} className="mx-1 text-flex-green" /> by the Flex Team
-          </p>
+          <div className="flex items-center">
+            <p className="text-foreground/60 text-sm flex items-center">
+              Made with <Heart size={14} className="mx-1 text-flex-green" /> by the Flex Team
+            </p>
+            <button 
+              onClick={scrollToTop} 
+              className="ml-6 p-2 rounded-full bg-flex-green/10 text-flex-green hover:bg-flex-green/20 transition-colors"
+              aria-label="Scroll to top"
+            >
+              <ArrowUp size={18} />
+            </button>
+          </div>
         </div>
       </div>
     </footer>

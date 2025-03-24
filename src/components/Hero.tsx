@@ -1,3 +1,4 @@
+
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
@@ -56,15 +57,24 @@ const Hero = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-flex-green/10 to-flex-yellow/10 pointer-events-none" />
               
-              <div className="absolute bottom-0 right-0 w-32 h-32">
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="opacity-70">
-                  <path 
-                    fill="#4CAF50" 
-                    d="M40,-51.2C50.8,-43.1,58.2,-29.7,62.8,-14.9C67.5,-0.1,69.3,16.2,63.4,28.8C57.5,41.5,43.8,50.6,29.4,55.5C15,60.5,-0.1,61.4,-14.4,57.7C-28.7,54,-42.1,45.7,-50.8,33.8C-59.5,21.9,-63.5,6.5,-62.5,-9.8C-61.5,-26.1,-55.5,-43.2,-43.4,-51.4C-31.4,-59.6,-13.5,-58.9,1.1,-60.2C15.7,-61.5,29.3,-59.3,40,-51.2Z" 
-                    transform="translate(100 100)" 
-                  />
-                </svg>
-              </div>
+              {/* 3D Chameleon Character */}
+              <motion.div 
+                className="absolute -right-6 -bottom-6 w-32 h-32"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ 
+                  duration: 0.8, 
+                  delay: 0.5,
+                  type: "spring",
+                  stiffness: 100 
+                }}
+              >
+                <img 
+                  src="/lovable-uploads/e1cb6a1f-60f1-4bb8-8d81-cf7ad0476d86.png" 
+                  alt="Flex Chameleon" 
+                  className="w-full h-auto transform -rotate-12" 
+                />
+              </motion.div>
             </motion.div>
             
             <div className="absolute -right-16 -bottom-16 w-64 h-64 bg-flex-orange/15 rounded-full filter blur-3xl" />

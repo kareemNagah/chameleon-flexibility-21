@@ -9,6 +9,10 @@ import NotFound from "./pages/NotFound";
 import TodoList from "./pages/TodoList";
 import Dashboard from "./pages/Dashboard";
 import AIPlanner from "./pages/AIPlanner";
+import Blog from "./pages/Blog";
+import Focus from "./pages/Focus";
+import Settings from "./pages/Settings";
+import About from "./pages/About";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +27,10 @@ const App = () => (
           <Route path="/todo" element={<TodoList />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/ai-planner" element={<AIPlanner />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/focus" element={<Focus />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/about" element={<About />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
