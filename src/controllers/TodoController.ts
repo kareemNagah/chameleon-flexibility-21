@@ -1,26 +1,26 @@
 
 import { Todo, CreateTodoInput, UpdateTodoInput } from '../models/Todo';
-import { ApiService } from '../services/ApiService';
+import { supabase } from '@/integrations/supabase/client';
 
-// This controller interfaces with your FastAPI backend
 export class TodoController {
-  private static STORAGE_KEY = 'todos';
-  private static ENDPOINT = '/todos';
-
-  // Flag to determine if we should use the API or localStorage
-  private static useApi = false; // Set to true when your FastAPI backend is ready
-
-  // Get all todos
+  // Get all todos for the current user
   static async getTodos(): Promise<Todo[]> {
     try {
-      if (this.useApi) {
-        // Use the API service
-        return await ApiService.get<Todo[]>(this.ENDPOINT);
-      } else {
-        // Fallback to localStorage
-        const storedTodos = localStorage.getItem(this.STORAGE_KEY);
-        return storedTodos ? JSON.parse(storedTodos) : [];
+      const { data: todos, error } = await supabase
+        .from('todos')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Error fetching todos:', error);
+        throw error;
       }
+      
+      return todos.map(todo => ({
+        ...todo,
+        id: todo.id,
+        createdAt: new Date(todo.created_at)
+      })) as Todo[];
     } catch (error) {
       console.error('Failed to fetch todos:', error);
       return [];
@@ -30,23 +30,36 @@ export class TodoController {
   // Create a new todo
   static async createTodo(todoInput: CreateTodoInput): Promise<Todo> {
     try {
-      if (this.useApi) {
-        // Use the API service
-        return await ApiService.post<Todo>(this.ENDPOINT, todoInput);
-      } else {
-        // Fallback to localStorage
-        const todos = await this.getTodos();
-        const newTodo: Todo = {
-          ...todoInput,
-          id: Date.now().toString(),
-          createdAt: new Date()
-        };
-        
-        const updatedTodos = [...todos, newTodo];
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updatedTodos));
-        
-        return newTodo;
+      // Get the current user's ID
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        throw new Error('User not authenticated');
       }
+      
+      const { data, error } = await supabase
+        .from('todos')
+        .insert([
+          { 
+            title: todoInput.title, 
+            completed: todoInput.completed,
+            user_id: user.id 
+          }
+        ])
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('Error creating todo:', error);
+        throw error;
+      }
+      
+      return {
+        id: data.id,
+        title: data.title,
+        completed: data.completed,
+        createdAt: new Date(data.created_at)
+      };
     } catch (error) {
       console.error('Failed to create todo:', error);
       throw error;
@@ -56,26 +69,28 @@ export class TodoController {
   // Update an existing todo
   static async updateTodo(id: string, todoInput: UpdateTodoInput): Promise<Todo | null> {
     try {
-      if (this.useApi) {
-        // Use the API service
-        return await ApiService.put<Todo>(`${this.ENDPOINT}/${id}`, todoInput);
-      } else {
-        // Fallback to localStorage
-        const todos = await this.getTodos();
-        const todoIndex = todos.findIndex(todo => todo.id === id);
-        
-        if (todoIndex === -1) return null;
-        
-        const updatedTodo = {
-          ...todos[todoIndex],
-          ...todoInput
-        };
-        
-        todos[todoIndex] = updatedTodo;
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(todos));
-        
-        return updatedTodo;
+      const { data, error } = await supabase
+        .from('todos')
+        .update({ 
+          title: todoInput.title, 
+          completed: todoInput.completed,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('Error updating todo:', error);
+        throw error;
       }
+      
+      return {
+        id: data.id,
+        title: data.title,
+        completed: data.completed,
+        createdAt: new Date(data.created_at)
+      };
     } catch (error) {
       console.error('Failed to update todo:', error);
       throw error;
@@ -85,20 +100,17 @@ export class TodoController {
   // Delete a todo
   static async deleteTodo(id: string): Promise<boolean> {
     try {
-      if (this.useApi) {
-        // Use the API service
-        await ApiService.delete<void>(`${this.ENDPOINT}/${id}`);
-        return true;
-      } else {
-        // Fallback to localStorage
-        const todos = await this.getTodos();
-        const filteredTodos = todos.filter(todo => todo.id !== id);
-        
-        if (filteredTodos.length === todos.length) return false;
-        
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(filteredTodos));
-        return true;
+      const { error } = await supabase
+        .from('todos')
+        .delete()
+        .eq('id', id);
+      
+      if (error) {
+        console.error('Error deleting todo:', error);
+        throw error;
       }
+      
+      return true;
     } catch (error) {
       console.error('Failed to delete todo:', error);
       throw error;

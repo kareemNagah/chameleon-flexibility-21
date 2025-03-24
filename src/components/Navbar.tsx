@@ -1,14 +1,13 @@
-
 import { useState, useEffect } from 'react';
-import { Menu, X, Sparkles, Bell, Settings, Flame } from 'lucide-react';
+import { Menu, X, Sparkles, Bell, Settings, Flame, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import AuthModal from './auth/AuthModal';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,17 +18,19 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const openAuthModal = () => {
-    setIsAuthModalOpen(true);
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
     if (isMenuOpen) {
       setIsMenuOpen(false);
     }
   };
 
-  const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
-    if (isMenuOpen) {
+  const handleSignOut = async () => {
+    try {
+      await signOut();
       setIsMenuOpen(false);
+    } catch (error) {
+      console.error("Error signing out:", error);
     }
   };
 
@@ -53,13 +54,15 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Streak Tracker */}
-        <div className="hidden md:flex items-center space-x-1 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
-          <Flame className="h-5 w-5 text-flex-orange" />
-          <span className="text-sm font-semibold text-flex-text">
-            5 Day Streak
-          </span>
-        </div>
+        {/* Streak Tracker - Only show if user is logged in */}
+        {user && (
+          <div className="hidden md:flex items-center space-x-1 bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm">
+            <Flame className="h-5 w-5 text-flex-orange" />
+            <span className="text-sm font-semibold text-flex-text">
+              5 Day Streak
+            </span>
+          </div>
+        )}
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
@@ -85,44 +88,60 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden md:flex items-center space-x-3">
-          {/* Notification Icon */}
-          <button 
-            onClick={toggleNotifications} 
-            className="p-2 rounded-full hover:bg-gray-100 text-foreground/80 hover:text-foreground transition-colors relative"
-          >
-            <Bell size={20} />
-            <span className="absolute top-0 right-0 bg-flex-orange w-2 h-2 rounded-full"></span>
-          </button>
-          
-          {/* Settings Icon */}
-          <Link to="/settings" className="p-2 rounded-full hover:bg-gray-100 text-foreground/80 hover:text-foreground transition-colors">
-            <Settings size={20} />
-          </Link>
-          
-          <button 
-            onClick={openAuthModal}
-            className="px-4 py-2 rounded-full text-foreground/80 hover:text-foreground transition-colors"
-          >
-            Login
-          </button>
-          <Link
-            to="/ai-planner"
-            className="cta-button"
-          >
-            Start Your Journey
-          </Link>
+          {user ? (
+            <>
+              {/* Notification Icon */}
+              <button 
+                onClick={toggleNotifications} 
+                className="p-2 rounded-full hover:bg-gray-100 text-foreground/80 hover:text-foreground transition-colors relative"
+              >
+                <Bell size={20} />
+                <span className="absolute top-0 right-0 bg-flex-orange w-2 h-2 rounded-full"></span>
+              </button>
+              
+              {/* Settings Icon */}
+              <Link to="/settings" className="p-2 rounded-full hover:bg-gray-100 text-foreground/80 hover:text-foreground transition-colors">
+                <Settings size={20} />
+              </Link>
+              
+              {/* Logout Button */}
+              <button 
+                onClick={handleSignOut}
+                className="px-4 py-2 rounded-full text-foreground/80 hover:text-foreground transition-colors flex items-center gap-2"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/auth"
+                className="px-4 py-2 rounded-full text-foreground/80 hover:text-foreground transition-colors"
+              >
+                Login
+              </Link>
+              <Link
+                to="/auth"
+                className="cta-button"
+              >
+                Start Your Journey
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile menu button */}
         <div className="md:hidden flex items-center space-x-3">
-          {/* Notification Icon */}
-          <button 
-            onClick={toggleNotifications} 
-            className="p-2 rounded-full hover:bg-gray-100 text-foreground/80 hover:text-foreground transition-colors relative"
-          >
-            <Bell size={20} />
-            <span className="absolute top-0 right-0 bg-flex-orange w-2 h-2 rounded-full"></span>
-          </button>
+          {user && (
+            <button 
+              onClick={toggleNotifications} 
+              className="p-2 rounded-full hover:bg-gray-100 text-foreground/80 hover:text-foreground transition-colors relative"
+            >
+              <Bell size={20} />
+              <span className="absolute top-0 right-0 bg-flex-orange w-2 h-2 rounded-full"></span>
+            </button>
+          )}
           
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -249,31 +268,35 @@ const Navbar = () => {
             Settings
           </Link>
           <div className="flex flex-col items-center space-y-4 pt-6 w-full">
-            <button 
-              onClick={() => {
-                setIsMenuOpen(false);
-                openAuthModal();
-              }}
-              className="w-full text-center px-4 py-2 rounded-full text-foreground/80 hover:text-foreground transition-colors"
-            >
-              Login
-            </button>
-            <Link
-              to="/ai-planner"
-              className="w-full text-center cta-button"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Start Your Journey
-            </Link>
+            {user ? (
+              <button 
+                onClick={handleSignOut}
+                className="w-full text-center px-4 py-2 flex items-center justify-center gap-2 rounded-full text-foreground/80 hover:text-foreground transition-colors"
+              >
+                <LogOut className="h-5 w-5" />
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link
+                  to="/auth"
+                  className="w-full text-center px-4 py-2 rounded-full text-foreground/80 hover:text-foreground transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/auth"
+                  className="w-full text-center cta-button"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Start Your Journey
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </div>
-
-      {/* Authentication Modal */}
-      <AuthModal 
-        isOpen={isAuthModalOpen} 
-        onClose={() => setIsAuthModalOpen(false)} 
-      />
     </header>
   );
 };

@@ -9,27 +9,37 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { toast } from '@/components/ui/use-toast';
 import { Trash2 } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import { useAuth } from '@/contexts/AuthContext';
 
 const TodoList = () => {
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   // Fetch todos using React Query
   const { data: todos = [], isLoading } = useQuery({
-    queryKey: ['todos'],
-    queryFn: () => TodoController.getTodos()
+    queryKey: ['todos', user?.id],
+    queryFn: () => TodoController.getTodos(),
+    enabled: !!user
   });
 
   // Add todo mutation
   const addTodoMutation = useMutation({
     mutationFn: (newTodo: CreateTodoInput) => TodoController.createTodo(newTodo),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['todos', user?.id] });
       toast({
-        title: "Todo added!",
+        title: "Task added!",
         description: "Your new task has been created.",
       });
       setNewTodoTitle('');
+    },
+    onError: (error) => {
+      toast({
+        title: "Failed to add task",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive"
+      });
     }
   });
 
@@ -38,7 +48,14 @@ const TodoList = () => {
     mutationFn: ({ id, completed }: { id: string; completed: boolean }) => 
       TodoController.updateTodo(id, { completed }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['todos', user?.id] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Failed to update task",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive"
+      });
     }
   });
 
@@ -46,10 +63,17 @@ const TodoList = () => {
   const deleteTodoMutation = useMutation({
     mutationFn: (id: string) => TodoController.deleteTodo(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['todos', user?.id] });
       toast({
-        title: "Todo removed",
+        title: "Task removed",
         description: "The task has been deleted.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Failed to delete task",
+        description: error instanceof Error ? error.message : "An unknown error occurred",
+        variant: "destructive"
       });
     }
   });
