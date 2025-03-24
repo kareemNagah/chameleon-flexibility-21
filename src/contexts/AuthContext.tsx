@@ -1,4 +1,3 @@
-
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -83,29 +82,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Sign up function - updated to login immediately after signup
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      // First, check if the user already exists
-      const { count, error: countError } = await supabase
-        .from('profiles')
-        .select('*', { count: 'exact', head: true })
-        .eq('id', email);
-      
-      // Alternative way to check if user exists
-      const { data: authUsers, error: authError } = await supabase.auth.admin.listUsers({
-        page: 1,
-        perPage: 1,
-        search: email
+      // First, try to get the user by email via sign-in attempt with incorrect password
+      // This is a way to check if a user exists without needing admin privileges
+      const { error: checkError } = await supabase.auth.signInWithPassword({
+        email,
+        password: "dummy-password-for-checking" // We're using a dummy password just to check if the account exists
       });
       
-      if (countError) {
-        console.error("Error checking existing user:", countError);
-      } else if (authUsers && authUsers.users.length > 0) {
-        // User exists, throw a descriptive error
-        toast({
-          title: "Email already registered",
-          description: "This email address is already registered. Please sign in instead.",
-          variant: "destructive",
-        });
-        throw new Error("Email already registered");
+      // If the error message indicates the user doesn't exist, we can proceed with signup
+      // Otherwise, if the error is about wrong password, the user exists
+      if (checkError) {
+        if (checkError.message.includes("Invalid login credentials")) {
+          // User exists but wrong password - email is registered
+          toast({
+            title: "Email already registered",
+            description: "This email address is already registered. Please sign in instead.",
+            variant: "destructive",
+          });
+          throw new Error("Email already registered");
+        } else if (!checkError.message.includes("Email not confirmed") && 
+                  !checkError.message.includes("user not found")) {
+          // Some other error
+          console.error("Error checking existing user:", checkError);
+        }
       }
       
       // Create the user without waiting for email confirmation
