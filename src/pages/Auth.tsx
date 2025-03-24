@@ -60,7 +60,7 @@ const Auth = () => {
       <Navbar />
       <div className="container max-w-md mx-auto pt-28 px-4">
         {showEmailConfirmAlert && (
-          <Alert variant="warning" className="mb-4">
+          <Alert variant="destructive" className="mb-4">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Email not confirmed</AlertTitle>
             <AlertDescription>

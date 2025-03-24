@@ -1,10 +1,6 @@
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { ChatOpenAI } from 'https://esm.sh/langchain/chat_models/openai'
-import { PromptTemplate } from 'https://esm.sh/langchain/prompts'
-import { StringOutputParser } from 'https://esm.sh/langchain/schema/output_parser'
-import { RunnableSequence } from 'https://esm.sh/langchain/schema/runnable'
 
 // CORS headers
 const corsHeaders = {
@@ -38,60 +34,55 @@ serve(async (req) => {
       throw new Error('OpenAI API key not found')
     }
 
-    // Initialize the LLM
-    const llm = new ChatOpenAI({
-      openAIApiKey,
-      temperature: 0.7,
-      modelName: 'gpt-4o-mini', // Using GPT-4o-mini for optimal performance/cost
-      maxConcurrency: 5,
-    })
-
     console.log('Received prompt:', prompt)
     console.log('User preferences:', userPreferences)
     console.log('Goal:', goal)
 
-    // Create a prompt template for productivity planning
-    const promptTemplate = PromptTemplate.fromTemplate(`
-      You are FLEX, an AI productivity assistant that helps users create personalized plans.
-      
-      User preferences: {preferences}
-      User's primary goal: {goal}
-      
-      User request: {query}
-      
-      Respond with a detailed and personalized productivity plan that includes:
-      1. A daily schedule with specific time blocks
-      2. Weekly focus areas that align with their goal
-      3. Recommended habits to build
-      4. Actionable next steps
-      
-      Make your response friendly, motivational, and tailored to their specific needs.
-    `)
-
-    // Create a runnable sequence
-    const chain = RunnableSequence.from([
-      {
-        query: (input) => input.prompt,
-        preferences: (input) => input.userPreferences,
-        goal: (input) => input.goal,
+    // Call the OpenAI API directly instead of using LangChain
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openAIApiKey}`,
+        'Content-Type': 'application/json',
       },
-      promptTemplate,
-      llm,
-      new StringOutputParser(),
-    ])
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'system',
+            content: `You are FLEX, an AI productivity assistant that helps users create personalized plans.
+            
+            Make your response friendly, motivational, and tailored to the user's specific needs.
+            `
+          },
+          {
+            role: 'user',
+            content: `
+            User preferences: ${JSON.stringify(userPreferences)}
+            User's primary goal: ${goal}
+            
+            User request: ${prompt}
+            
+            Please create a detailed and personalized productivity plan that includes:
+            1. A daily schedule with specific time blocks
+            2. Weekly focus areas that align with their goal
+            3. Recommended habits to build
+            4. Actionable next steps
+            `
+          }
+        ],
+        temperature: 0.7,
+      }),
+    });
 
-    // Execute the chain
-    const response = await chain.invoke({
-      prompt,
-      userPreferences: JSON.stringify(userPreferences),
-      goal,
-    })
+    const data = await response.json();
+    const aiResponse = data.choices[0].message.content;
 
     // Return the AI response
     return new Response(
       JSON.stringify({
         success: true,
-        message: response,
+        message: aiResponse,
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
