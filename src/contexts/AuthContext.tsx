@@ -82,29 +82,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Sign up function
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      const { error } = await supabase.auth.signUp({ 
+      // Update to use signInWithPassword after signUp to automatically log the user in
+      const { error: signUpError } = await supabase.auth.signUp({ 
         email, 
         password,
         options: {
           data: {
             full_name: fullName
-          }
+          },
+          emailRedirectTo: window.location.origin + '/auth'
         }
       });
       
-      if (error) {
+      if (signUpError) {
         toast({
           title: "Error signing up",
-          description: error.message,
+          description: signUpError.message,
           variant: "destructive",
         });
-        throw error;
+        throw signUpError;
+      }
+      
+      // Auto sign in after sign up
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+      
+      if (signInError) {
+        console.error("Auto sign-in failed:", signInError);
+        toast({
+          title: "Account created!",
+          description: "Please sign in with your credentials.",
+        });
+        return;
       }
       
       toast({
         title: "Account created!",
-        description: "Please check your email for verification instructions."
+        description: "You've been automatically signed in."
       });
+      
+      navigate('/dashboard');
     } catch (error) {
       console.error("Sign up error:", error);
       throw error;
