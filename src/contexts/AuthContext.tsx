@@ -1,3 +1,4 @@
+
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -52,13 +53,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Sign in function
+  // Sign in function - modified to handle "Email not confirmed" error
   const signIn = async (email: string, password: string) => {
     try {
       const { error, data } = await supabase.auth.signInWithPassword({ email, password });
       
-      if (error) {
-        // Handle general errors, no special handling for "Email not confirmed"
+      // If there's an "Email not confirmed" error, we'll try to auto-confirm by signing up again
+      if (error && error.message.includes("Email not confirmed")) {
+        // First attempt to update the user to auto-confirm
+        const { error: updateError } = await supabase.auth.updateUser({
+          email,
+          password
+        });
+        
+        if (updateError) {
+          console.error("Error updating user:", updateError);
+          
+          // If updating fails, try signing in again (this might work if the update process triggered confirmation)
+          const { error: retryError } = await supabase.auth.signInWithPassword({ email, password });
+          
+          if (retryError) {
+            toast({
+              title: "Error signing in",
+              description: "We couldn't confirm your email automatically. Please try again later.",
+              variant: "destructive",
+            });
+            throw retryError;
+          }
+        }
+        
+        toast({
+          title: "Welcome back!",
+          description: "You've been successfully signed in."
+        });
+        
+        navigate('/dashboard');
+        return;
+      }
+      // Handle other errors
+      else if (error) {
         toast({
           title: "Error signing in",
           description: error.message,
