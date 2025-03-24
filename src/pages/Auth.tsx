@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Mail, Lock, User } from 'lucide-react';
+import { Mail, Lock, User, AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Navbar from '@/components/Navbar';
 
 const Auth = () => {
@@ -16,6 +17,8 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showEmailConfirmAlert, setShowEmailConfirmAlert] = useState(false);
+  const [activeTab, setActiveTab] = useState('login');
 
   // Redirect if user is already logged in
   if (user && !isLoading) {
@@ -29,6 +32,10 @@ const Auth = () => {
       await signIn(email, password);
     } catch (error) {
       console.error("Login error:", error);
+      // Check if error is email not confirmed
+      if (error instanceof Error && error.message.includes("Email not confirmed")) {
+        setShowEmailConfirmAlert(true);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -39,6 +46,8 @@ const Auth = () => {
     setIsSubmitting(true);
     try {
       await signUp(email, password, fullName);
+      // Switch to login tab after signup
+      setActiveTab('login');
     } catch (error) {
       console.error("Signup error:", error);
     } finally {
@@ -50,7 +59,17 @@ const Auth = () => {
     <div className="min-h-screen bg-gradient-to-br from-white to-green-50">
       <Navbar />
       <div className="container max-w-md mx-auto pt-28 px-4">
-        <Tabs defaultValue="login" className="w-full">
+        {showEmailConfirmAlert && (
+          <Alert variant="warning" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Email not confirmed</AlertTitle>
+            <AlertDescription>
+              Please check your email inbox and follow the verification link before signing in.
+            </AlertDescription>
+          </Alert>
+        )}
+        
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-8">
             <TabsTrigger value="login">Login</TabsTrigger>
             <TabsTrigger value="register">Register</TabsTrigger>

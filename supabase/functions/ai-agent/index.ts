@@ -42,7 +42,7 @@ serve(async (req) => {
     const llm = new ChatOpenAI({
       openAIApiKey,
       temperature: 0.7,
-      modelName: 'gpt-4o', // Using GPT-4o for optimal performance
+      modelName: 'gpt-4o-mini', // Using GPT-4o-mini for optimal performance/cost
       maxConcurrency: 5,
     })
 

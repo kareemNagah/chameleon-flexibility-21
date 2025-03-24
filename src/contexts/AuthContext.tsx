@@ -59,11 +59,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       
       if (error) {
-        toast({
-          title: "Error signing in",
-          description: error.message,
-          variant: "destructive",
-        });
+        // Handle the email not confirmed error specifically
+        if (error.message === "Email not confirmed") {
+          toast({
+            title: "Email not confirmed",
+            description: "Please check your email for verification instructions or contact support.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Error signing in",
+            description: error.message,
+            variant: "destructive",
+          });
+        }
         throw error;
       }
       
@@ -79,11 +88,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Sign up function
+  // Sign up function - updated to set autoconfirm
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      // Update to use signInWithPassword after signUp to automatically log the user in
-      const { error: signUpError } = await supabase.auth.signUp({ 
+      // For development purposes, we're setting emailRedirectTo but not waiting for confirmation
+      const { data, error: signUpError } = await supabase.auth.signUp({ 
         email, 
         password,
         options: {
@@ -103,7 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw signUpError;
       }
       
-      // Auto sign in after sign up
+      // If auto-confirm is enabled in Supabase, this will work directly
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -111,6 +120,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       if (signInError) {
         console.error("Auto sign-in failed:", signInError);
+        
+        // If email confirmation is required
+        if (signInError.message === "Email not confirmed") {
+          toast({
+            title: "Account created!",
+            description: "Please check your email for verification instructions before signing in.",
+          });
+          return;
+        }
+        
         toast({
           title: "Account created!",
           description: "Please sign in with your credentials.",
