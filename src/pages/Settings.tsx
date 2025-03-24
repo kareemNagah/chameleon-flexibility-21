@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -19,12 +18,10 @@ const Settings = () => {
   const [privacyMode, setPrivacyMode] = useState(false);
   const [twoFactorAuth, setTwoFactorAuth] = useState(false);
   
-  // Scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   
-  // Toggle dark mode
   const handleDarkModeToggle = () => {
     setDarkMode(!darkMode);
     toast({
@@ -36,7 +33,6 @@ const Settings = () => {
     // In a real app, this would apply the dark mode to the entire app
   };
   
-  // Update notification settings
   const saveNotificationSettings = () => {
     toast({
       title: "Notification preferences saved",
@@ -45,7 +41,6 @@ const Settings = () => {
     });
   };
   
-  // Change language
   const handleLanguageChange = (value) => {
     setLanguage(value);
     toast({
@@ -55,9 +50,7 @@ const Settings = () => {
     });
   };
   
-  // Toggle two-factor authentication
   const handleToggleTwoFactor = () => {
-    // In a real app, this would open a 2FA setup flow
     setTwoFactorAuth(!twoFactorAuth);
     
     if (!twoFactorAuth) {
@@ -75,7 +68,6 @@ const Settings = () => {
     }
   };
   
-  // Simulate account logout
   const handleLogout = () => {
     toast({
       title: "Logged out",
@@ -115,7 +107,6 @@ const Settings = () => {
               </TabsTrigger>
             </TabsList>
             
-            {/* Account Settings */}
             <TabsContent value="account">
               <Card>
                 <CardHeader>
@@ -125,7 +116,6 @@ const Settings = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Profile Info */}
                   <div className="space-y-4">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div>
@@ -153,7 +143,6 @@ const Settings = () => {
                   
                   <Separator />
                   
-                  {/* Subscription & Payments */}
                   <div className="space-y-4">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div>
@@ -183,7 +172,6 @@ const Settings = () => {
                   
                   <Separator />
                   
-                  {/* Account Actions */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Account Actions</h3>
                     
@@ -205,7 +193,6 @@ const Settings = () => {
               </Card>
             </TabsContent>
             
-            {/* Notifications Settings */}
             <TabsContent value="notifications">
               <Card>
                 <CardHeader>
@@ -215,7 +202,6 @@ const Settings = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Email Notifications */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Email Notifications</h3>
                     
@@ -251,7 +237,6 @@ const Settings = () => {
                   
                   <Separator />
                   
-                  {/* Push Notifications */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Push Notifications</h3>
                     
@@ -287,7 +272,6 @@ const Settings = () => {
                   
                   <Separator />
                   
-                  {/* Sound Effects */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="space-y-0.5">
@@ -307,7 +291,6 @@ const Settings = () => {
               </Card>
             </TabsContent>
             
-            {/* Appearance Settings */}
             <TabsContent value="appearance">
               <Card>
                 <CardHeader>
@@ -317,7 +300,6 @@ const Settings = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Theme */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Theme</h3>
                     
@@ -326,17 +308,21 @@ const Settings = () => {
                         <div className="text-sm font-medium">Dark Mode</div>
                         <div className="text-xs text-gray-500">Switch between light and dark themes</div>
                       </div>
-                      <Switch 
-                        checked={darkMode} 
-                        onCheckedChange={handleDarkModeToggle}
-                        icon={darkMode ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-                      />
+                      <div className="flex items-center space-x-2">
+                        <Switch 
+                          checked={darkMode} 
+                          onCheckedChange={handleDarkModeToggle}
+                        />
+                        {darkMode ? 
+                          <Moon className="h-4 w-4 text-gray-500" /> : 
+                          <Sun className="h-4 w-4 text-gray-500" />
+                        }
+                      </div>
                     </div>
                   </div>
                   
                   <Separator />
                   
-                  {/* Language */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Language</h3>
                     
@@ -366,7 +352,6 @@ const Settings = () => {
                   
                   <Separator />
                   
-                  {/* Text Size */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Text Size</h3>
                     
@@ -383,7 +368,6 @@ const Settings = () => {
               </Card>
             </TabsContent>
             
-            {/* Privacy & Security */}
             <TabsContent value="privacy">
               <Card>
                 <CardHeader>
@@ -393,7 +377,6 @@ const Settings = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Privacy Options */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Privacy</h3>
                     
@@ -429,7 +412,6 @@ const Settings = () => {
                   
                   <Separator />
                   
-                  {/* Security */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Security</h3>
                     
@@ -457,7 +439,6 @@ const Settings = () => {
                   
                   <Separator />
                   
-                  {/* Data Management */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-medium">Data Management</h3>
                     
