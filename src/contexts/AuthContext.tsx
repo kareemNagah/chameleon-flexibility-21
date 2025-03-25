@@ -10,9 +10,10 @@ type AuthContextType = {
   session: Session | null;
   user: User | null;
   isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, fullName: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  isDarkMode: boolean;
+  toggleDarkMode: () => void;
 };
 
 // Create context with default values
@@ -20,9 +21,10 @@ const AuthContext = createContext<AuthContextType>({
   session: null,
   user: null,
   isLoading: true,
-  signIn: async () => {},
-  signUp: async () => {},
+  signInWithGoogle: async () => {},
   signOut: async () => {},
+  isDarkMode: false,
+  toggleDarkMode: () => {},
 });
 
 // Provider component that wraps the app
@@ -30,7 +32,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    // Check if user has a preference in localStorage
+    const savedMode = localStorage.getItem('darkMode');
+    // Check if user's system prefers dark mode
+    const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return savedMode ? savedMode === 'true' : systemPreference;
+  });
   const navigate = useNavigate();
+
+  // Set dark mode class on document
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('darkMode', isDarkMode.toString());
+  }, [isDarkMode]);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -53,139 +72,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Sign in function - modified to handle "Email not confirmed" error
-  const signIn = async (email: string, password: string) => {
+  // Toggle dark mode function
+  const toggleDarkMode = () => {
+    setIsDarkMode(prev => !prev);
+  };
+
+  // Google sign in function
+  const signInWithGoogle = async () => {
     try {
-      const { error, data } = await supabase.auth.signInWithPassword({ email, password });
-      
-      // If there's an "Email not confirmed" error, we'll try to auto-confirm by signing up again
-      if (error && error.message.includes("Email not confirmed")) {
-        // First attempt to update the user to auto-confirm
-        const { error: updateError } = await supabase.auth.updateUser({
-          email,
-          password
-        });
-        
-        if (updateError) {
-          console.error("Error updating user:", updateError);
-          
-          // If updating fails, try signing in again (this might work if the update process triggered confirmation)
-          const { error: retryError } = await supabase.auth.signInWithPassword({ email, password });
-          
-          if (retryError) {
-            toast({
-              title: "Error signing in",
-              description: "We couldn't confirm your email automatically. Please try again later.",
-              variant: "destructive",
-            });
-            throw retryError;
-          }
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/dashboard',
         }
-        
+      });
+      
+      if (error) {
         toast({
-          title: "Welcome back!",
-          description: "You've been successfully signed in."
-        });
-        
-        navigate('/dashboard');
-        return;
-      }
-      // Handle other errors
-      else if (error) {
-        toast({
-          title: "Error signing in",
+          title: "Error signing in with Google",
           description: error.message,
           variant: "destructive",
         });
         throw error;
       }
       
-      toast({
-        title: "Welcome back!",
-        description: "You've been successfully signed in."
-      });
-      
-      navigate('/dashboard');
+      // Note: No need for a toast here as the page will redirect
     } catch (error) {
-      console.error("Sign in error:", error);
-      throw error;
-    }
-  };
-
-  // Sign up function - updated to login immediately after signup
-  const signUp = async (email: string, password: string, fullName: string) => {
-    try {
-      // First, try to get the user by email via sign-in attempt with incorrect password
-      // This is a way to check if a user exists without needing admin privileges
-      const { error: checkError } = await supabase.auth.signInWithPassword({
-        email,
-        password: "dummy-password-for-checking" // We're using a dummy password just to check if the account exists
-      });
-      
-      // If the error message indicates the user doesn't exist, we can proceed with signup
-      // Otherwise, if the error is about wrong password, the user exists
-      if (checkError) {
-        if (checkError.message.includes("Invalid login credentials")) {
-          // User exists but wrong password - email is registered
-          toast({
-            title: "Email already registered",
-            description: "This email address is already registered. Please sign in instead.",
-            variant: "destructive",
-          });
-          throw new Error("Email already registered");
-        } else if (!checkError.message.includes("Email not confirmed") && 
-                  !checkError.message.includes("user not found")) {
-          // Some other error
-          console.error("Error checking existing user:", checkError);
-        }
-      }
-      
-      // Create the user without waiting for email confirmation
-      const { data, error: signUpError } = await supabase.auth.signUp({ 
-        email, 
-        password,
-        options: {
-          data: {
-            full_name: fullName
-          },
-          // Remove emailRedirectTo to bypass email confirmation
-          emailRedirectTo: undefined
-        }
-      });
-      
-      if (signUpError) {
-        toast({
-          title: "Error signing up",
-          description: signUpError.message,
-          variant: "destructive",
-        });
-        throw signUpError;
-      }
-      
-      // Immediately sign in the user
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-      
-      if (signInError) {
-        console.error("Auto sign-in failed:", signInError);
-        toast({
-          title: "Account created",
-          description: "Your account was created but we couldn't sign you in automatically. Please sign in manually.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      toast({
-        title: "Account created!",
-        description: "You've been successfully signed in."
-      });
-      
-      navigate('/dashboard');
-    } catch (error) {
-      console.error("Sign up error:", error);
+      console.error("Google sign in error:", error);
       throw error;
     }
   };
@@ -220,9 +133,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     session,
     user,
     isLoading,
-    signIn,
-    signUp,
-    signOut
+    signInWithGoogle,
+    signOut,
+    isDarkMode,
+    toggleDarkMode
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
