@@ -13,7 +13,9 @@ interface AuthModalProps {
 
 const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { signInWithGoogle, isDarkMode } = useAuth();
+  const { signInWithGoogle } = useAuth();
+  // We're enforcing dark mode by default in AuthContext
+  const isDarkMode = true;
 
   const handleGoogleSignIn = async () => {
     setIsSubmitting(true);
