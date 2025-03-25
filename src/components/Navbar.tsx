@@ -5,13 +5,12 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import AuthModal from "./auth/AuthModal";
-import DarkModeToggle from "./DarkModeToggle";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
-  const { user, signOut, isDarkMode } = useAuth();
+  const { user, signOut } = useAuth();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
@@ -20,7 +19,7 @@ const Navbar = () => {
   const isTransparent = isHomePage;
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 ${isTransparent ? "bg-transparent" : isDarkMode ? "bg-gray-900 border-b border-gray-800" : "bg-white/90 backdrop-blur-md border-b border-gray-100"}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 ${isTransparent ? "bg-transparent" : "bg-gray-900 border-b border-gray-800"}`}>
       <div className="container mx-auto flex justify-between items-center p-4">
         <Link to="/" className="flex items-center gap-2" onClick={closeMenu}>
           <img 
@@ -28,23 +27,21 @@ const Navbar = () => {
             alt="Flex Logo" 
             className="h-8 w-auto" 
           />
-          <span className={`font-bold text-xl ${isDarkMode ? "text-white" : "text-flex-text"}`}>Flex</span>
+          <span className="font-bold text-xl text-white">Flex</span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
-          <Link to="/about" className={`nav-link ${isDarkMode ? "text-gray-300 hover:text-flex-green" : ""}`}>About</Link>
-          <Link to="/blog" className={`nav-link ${isDarkMode ? "text-gray-300 hover:text-flex-green" : ""}`}>Blog</Link>
-          <Link to="/focus" className={`nav-link ${isDarkMode ? "text-gray-300 hover:text-flex-green" : ""}`}>Focus</Link>
-          
-          <DarkModeToggle className="ml-2" />
+          <Link to="/about" className="nav-link text-gray-300 hover:text-flex-green">About</Link>
+          <Link to="/blog" className="nav-link text-gray-300 hover:text-flex-green">Blog</Link>
+          <Link to="/focus" className="nav-link text-gray-300 hover:text-flex-green">Focus</Link>
           
           {user ? (
             <>
               <Link to="/dashboard">
                 <Button 
                   variant="outline" 
-                  className={isDarkMode ? "border-gray-700 text-white hover:bg-gray-800" : ""}
+                  className="border-gray-700 text-white hover:bg-gray-800"
                 >
                   Dashboard
                 </Button>
@@ -68,7 +65,6 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <div className="flex items-center gap-2 md:hidden">
-          <DarkModeToggle />
           <Button
             variant="ghost"
             size="icon"
@@ -77,9 +73,9 @@ const Navbar = () => {
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className={`h-6 w-6 ${isDarkMode ? "text-white" : ""}`} />
+              <X className="h-6 w-6 text-white" />
             ) : (
-              <Menu className={`h-6 w-6 ${isDarkMode ? "text-white" : ""}`} />
+              <Menu className="h-6 w-6 text-white" />
             )}
           </Button>
         </div>
@@ -87,25 +83,25 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <nav className={`md:hidden p-4 pt-0 ${isDarkMode ? "bg-gray-900" : "bg-white"}`}>
+        <nav className="md:hidden p-4 pt-0 bg-gray-900">
           <div className="flex flex-col space-y-4">
             <Link 
               to="/about" 
-              className={`p-2 ${isDarkMode ? "text-gray-200 hover:bg-gray-800" : "hover:bg-gray-100"} rounded-md`}
+              className="p-2 text-gray-200 hover:bg-gray-800 rounded-md"
               onClick={closeMenu}
             >
               About
             </Link>
             <Link 
               to="/blog" 
-              className={`p-2 ${isDarkMode ? "text-gray-200 hover:bg-gray-800" : "hover:bg-gray-100"} rounded-md`}
+              className="p-2 text-gray-200 hover:bg-gray-800 rounded-md"
               onClick={closeMenu}
             >
               Blog
             </Link>
             <Link 
               to="/focus" 
-              className={`p-2 ${isDarkMode ? "text-gray-200 hover:bg-gray-800" : "hover:bg-gray-100"} rounded-md`}
+              className="p-2 text-gray-200 hover:bg-gray-800 rounded-md"
               onClick={closeMenu}
             >
               Focus
@@ -115,7 +111,7 @@ const Navbar = () => {
               <>
                 <Link 
                   to="/dashboard" 
-                  className={`p-2 ${isDarkMode ? "text-gray-200 hover:bg-gray-800" : "hover:bg-gray-100"} rounded-md`}
+                  className="p-2 text-gray-200 hover:bg-gray-800 rounded-md"
                   onClick={closeMenu}
                 >
                   Dashboard

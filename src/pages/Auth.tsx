@@ -9,7 +9,7 @@ import Navbar from '@/components/Navbar';
 import { useState } from 'react';
 
 const Auth = () => {
-  const { user, isLoading, signInWithGoogle, isDarkMode } = useAuth();
+  const { user, isLoading, signInWithGoogle } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
@@ -37,7 +37,7 @@ const Auth = () => {
   };
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'dark bg-gray-900' : 'bg-gradient-to-br from-white to-green-50'}`}>
+    <div className="min-h-screen bg-gray-900">
       <Navbar />
       <div className="container max-w-md mx-auto pt-28 px-4">
         {error && (
@@ -50,10 +50,10 @@ const Auth = () => {
           </Alert>
         )}
         
-        <Card className={isDarkMode ? 'bg-gray-800 text-white border-gray-700' : ''}>
+        <Card className="bg-gray-800 text-white border-gray-700">
           <CardHeader>
             <CardTitle>Sign In with Google</CardTitle>
-            <CardDescription className={isDarkMode ? 'text-gray-300' : ''}>
+            <CardDescription className="text-gray-300">
               Use your Google account to sign in to Flex.
             </CardDescription>
           </CardHeader>

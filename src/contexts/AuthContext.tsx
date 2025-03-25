@@ -12,8 +12,6 @@ type AuthContextType = {
   isLoading: boolean;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
 };
 
 // Create context with default values
@@ -23,8 +21,6 @@ const AuthContext = createContext<AuthContextType>({
   isLoading: true,
   signInWithGoogle: async () => {},
   signOut: async () => {},
-  isDarkMode: false,
-  toggleDarkMode: () => {},
 });
 
 // Provider component that wraps the app
@@ -32,24 +28,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    // Check if user has a preference in localStorage
-    const savedMode = localStorage.getItem('darkMode');
-    // Check if user's system prefers dark mode
-    const systemPreference = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    return savedMode ? savedMode === 'true' : systemPreference;
-  });
   const navigate = useNavigate();
 
-  // Set dark mode class on document
+  // Apply dark mode by default to document
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    localStorage.setItem('darkMode', isDarkMode.toString());
-  }, [isDarkMode]);
+    document.documentElement.classList.add('dark');
+  }, []);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -71,11 +55,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => subscription.unsubscribe();
   }, []);
-
-  // Toggle dark mode function
-  const toggleDarkMode = () => {
-    setIsDarkMode(prev => !prev);
-  };
 
   // Google sign in function
   const signInWithGoogle = async () => {
@@ -135,8 +114,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isLoading,
     signInWithGoogle,
     signOut,
-    isDarkMode,
-    toggleDarkMode
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
